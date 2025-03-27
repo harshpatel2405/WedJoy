@@ -1,0 +1,2 @@
+GET http://localhost:1999/api/admin/dashboard/totalEvents
+Content-Type: application/json

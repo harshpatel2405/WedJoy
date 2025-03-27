@@ -1,0 +1,3 @@
+DELETE http://localhost:1999/deleteEvent/67e2222dcb59df8e10a9e2bd
+Content-Type: application/json
+

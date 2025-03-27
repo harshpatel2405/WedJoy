@@ -1,0 +1,34 @@
+POST http://localhost:1999/addEvent
+Content-Type: application/json
+
+{
+  "eventID": "SPO-CRICKET-2025",
+  "eventName": "T20 Tournament Championship 2025",
+  "eventCategory": "Sports",
+  "eventDescription": "Witness top international cricket teams compete in an exciting T20 tournament series. Featuring live matches, fan zones, and player meet-and-greets.",
+  "eventTags": "Cricket, Sports, Tournament, T20",
+  "eventStartDate": 1754467200, 
+  "eventEndDate": 1755475200,  
+  "eventStartTime": 57600,      
+  "eventEndTime": 75600,       
+  "eventType": "offline",
+  "venueName": "National Cricket Stadium",
+  "venuAddress": "Sports City Complex, Champions Road",
+  "venueGoogleMapLink": "https://goo.gl/maps/cricketstadium",
+  "ticketType": "paid",
+  "ticketPrice": 75,
+  "totalTickets": 35000,
+  "organizerName": "International Cricket Council",
+  "organizerContactEmail": "tickets@icc-cricket.com",
+  "organizerContactPhone": 911234567890,
+  "websiteLink": "https://icc-cricket.com/t20championship",
+  "eventBannerImage": "https://img.freepik.com/free-vector/red-ball-hitting-wicket-stumps-with-bat-black-abstract-splash-background-cricket-fever-concept_1302-5492.jpg?ga=GA1.1.1544438568.1739773823&semt=ais_hybrid",
+  "gallery": "https://example.com/cricket1.jpg,https://example.com/cricket2.jpg",
+  "promoVideo": "https://youtube.com/t20championship2025",
+  "ageRestrictions": false,
+  "accessibilityOptions": true,
+  "sponsors": true,
+  "refundPolicy": "Refunds available up to 48 hours before match date",
+  "tnc": "Tickets are non-transferable. No outside food allowed.",
+  "eventCreated": 1746057600
+}

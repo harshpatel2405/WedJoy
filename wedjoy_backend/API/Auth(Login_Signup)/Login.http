@@ -1,0 +1,8 @@
+POST http://localhost:1999/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "gadaelectronics@yopmail.com",
+    "password": "HarshHarshPatelPatel@@34"
+}
+

@@ -1,0 +1,16 @@
+POST http://localhost:1999/api/auth/eventOrganizer/signup
+Content-Type: application/json
+
+{
+  "name": "Event Organizer Doe",
+  "email": "froimottabeiga-1244@yopmail.com",
+  "password": "password123",
+  "phone": "1234567885",
+  "organizationName": "Event Organizer Organization",
+  "organizationWebsite": "https://www.eventorganizer.com",
+  "area": "123 Main St",
+  "city": "Anytown",
+  "state": "CA",
+  "pincode": "12345",
+  "profilePicture": "https://example.com/profile.jpg"
+}

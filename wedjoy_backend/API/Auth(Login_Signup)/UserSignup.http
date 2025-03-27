@@ -1,0 +1,14 @@
+POST http://localhost:1999api/auth/signup
+Content-Type: application/json
+
+{
+  "gender": "male",
+  "fullName": "Rahul Sharma",
+  "email": "harsh21233@yopmail.com",
+  "password": "hell0Harsh@gmail",
+  "phone": "9875543859",
+  "dob": "15/08/2004",
+  "city": "Mumbai",
+  "interests": "cricket",
+  "profilePicture": "https://example.com/profile.jpg"
+}

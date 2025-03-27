@@ -1,0 +1,8 @@
+PUT http://localhost:1999/updateEvent/67e2222dcb59df8e10a9e2bd
+Content-Type: application/json
+
+{
+  "eventName": "Updated Tech Expo 2025",
+  "ticketPrice": 1000000000,
+  "totalTickets":95886332
+}

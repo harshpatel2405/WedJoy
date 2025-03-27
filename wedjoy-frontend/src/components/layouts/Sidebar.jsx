@@ -1,0 +1,1 @@
+// here we will be calling api in sidebar also to get the details of user in sidebar or weshould use context to store  but on every refrsh data shouod come , context wll not provide data after refresh , so we need that

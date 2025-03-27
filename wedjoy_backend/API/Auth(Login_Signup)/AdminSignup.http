@@ -1,0 +1,9 @@
+POST http://localhost:1999/api/auth/admin/signup
+Content-Type: application/json
+
+{
+  "name": "Harsh Patel Admin",
+  "email": "technorex439@gmail.com",
+  "password": "+Harsh-Patel1",
+  "phone": "9633589963"
+}

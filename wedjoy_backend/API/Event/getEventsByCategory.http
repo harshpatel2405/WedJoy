@@ -1,0 +1,2 @@
+GET http://localhost:1999/category/workshops?page=1&limit=15
+Content-Type: application/json

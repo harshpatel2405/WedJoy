@@ -1,0 +1,2 @@
+GET http://localhost:1999/api/admin/dashboard/getTotalActiveBusinesses
+Content-Type: application/json

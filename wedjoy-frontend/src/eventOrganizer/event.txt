@@ -1,0 +1,73 @@
+Features, Working, and APIs Required for Each Page
+1. Dashboard Overview (/event-organizer/dashboard)
+Features:
+
+Quick summary of event organizer activities
+Number of events created
+Total RSVPs and participants
+Recent event activity
+APIs Required:
+
+GET /api/event-organizer/stats → Fetch total events, RSVPs, participants
+GET /api/event-organizer/recent-activity → Fetch latest event updates
+
+2. Manage Events (/event-organizer/manage-events)
+Features:
+
+List all created events
+Create a new event
+Edit or delete existing events
+Track RSVPs
+APIs Required:
+
+GET /api/events → Fetch all events created by the organizer
+POST /api/events → Create a new event
+PUT /api/events/:eventId → Update an event
+DELETE /api/events/:eventId → Delete an event
+GET /api/events/:eventId/attendees → Get RSVPs for an event
+
+3. Event Communication (/event-organizer/event-communication)
+Features:
+
+Direct messaging with event attendees
+Send event reminders/updates
+APIs Required:
+
+GET /api/messages → Fetch conversations/messages with attendees
+POST /api/messages/send → Send message to attendees
+POST /api/notifications → Send reminders for events
+
+4. Event Analytics (/event-organizer/event-analytics)
+Features:
+
+Track event attendance
+View feedback and ratings
+Analyze engagement statistics
+APIs Required:
+
+GET /api/event-analytics/attendance → Fetch attendance data
+GET /api/event-analytics/feedback → Fetch event feedback
+GET /api/event-analytics/stats → Fetch participation and engagement stats
+
+5. Volunteer & Charity Opportunities (/event-organizer/volunteer-opportunities)
+Features:
+
+Post charity or volunteer events
+Manage existing volunteer opportunities
+APIs Required:
+
+GET /api/volunteer-events → Fetch volunteer events posted by the organizer
+POST /api/volunteer-events → Create a new volunteer opportunity
+PUT /api/volunteer-events/:eventId → Update a volunteer event
+DELETE /api/volunteer-events/:eventId → Delete a volunteer event
+
+6. Settings (/event-organizer/settings)
+Features:
+
+Update event organizer profile
+Manage notification preferences
+APIs Required:
+
+GET /api/event-organizer/profile → Fetch organizer profile
+PUT /api/event-organizer/profile → Update profile details
+PUT /api/event-organizer/notifications → Update notification settings

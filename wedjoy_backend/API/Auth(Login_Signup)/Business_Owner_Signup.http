@@ -1,0 +1,13 @@
+POST http://localhost:1999/api/auth/businessOwner/signup
+Content-Type: application/json
+
+{
+    "name": "Business Owner Doe",
+    "email": "busine@gmail.com",
+    "password": "password123",
+    "phone": "5222296333",
+    "businessName": "Business Owner Business",
+    "address":"Sundarvan Apartment",
+    "ownerName":"Harsh Patel"    
+   
+}

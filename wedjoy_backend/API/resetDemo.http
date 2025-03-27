@@ -1,0 +1,6 @@
+POST http://localhost:1999/api/auth/reset-Password-Demo
+content-type: application/json
+
+{
+    "email": "userwedjoy@yopmail.com"
+}

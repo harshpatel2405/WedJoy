@@ -1,0 +1,2 @@
+GET http://localhost:1999/api/admin/dashboard/getRecentEvents
+Content-Type: application/json

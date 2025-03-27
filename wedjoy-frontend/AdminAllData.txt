@@ -1,0 +1,99 @@
+1. Dashboard Overview
+Models Used:
+•	UserProfile Model (for total users, user growth)
+•	Event Model (for total events, recent events, event categories distribution)
+•	BusinessProfile Model (for active businesses)
+•	RSVP & Event Registration Model (for engagement stats)
+•	Review & Rating Model (for ratings/reviews)
+•	Revenue Model (if tracking revenue)
+APIs Required:
+•	GET /admin/stats/users → Fetch total user count
+•	GET /admin/stats/events → Fetch total event count
+•	GET /admin/stats/businesses → Fetch total active businesses
+•	GET /admin/stats/revenue → Fetch total revenue
+•	GET /admin/events/recent → Fetch latest events
+•	GET /admin/users/growth → Fetch user growth data for charts
+•	GET /admin/events/categories → Fetch event categories distribution
+________________________________________
+🔹 2. Manage Events
+Models Used:
+•	Event Model (to manage event details)
+•	RSVP & Event Registration Model (for event insights)
+•	Revenue Model (if monetized)
+APIs Required:
+•	GET /admin/events → Fetch list of events
+•	GET /admin/events/{event_id} → Fetch event details
+•	POST /admin/events → Create a new event
+•	PUT /admin/events/{event_id} → Edit event details
+•	DELETE /admin/events/{event_id} → Delete an event
+•	PATCH /admin/events/{event_id}/approve → Approve an event
+•	PATCH /admin/events/{event_id}/reject → Reject an event
+•	GET /admin/events/{event_id}/insights → Fetch event engagement stats
+________________________________________
+🔹 3. Manage Businesses
+Models Used:
+•	BusinessProfile Model (for business details)
+•	Review & Rating Model (for business ratings)
+•	Revenue Model (for business earnings)
+APIs Required:
+•	GET /admin/businesses → Fetch list of businesses
+•	GET /admin/businesses/{business_id} → Fetch business details
+•	PATCH /admin/businesses/{business_id}/approve → Approve business
+•	PATCH /admin/businesses/{business_id}/reject → Reject business
+•	GET /admin/businesses/revenue → Fetch business revenue data
+•	PATCH /admin/businesses/{business_id}/edit → Edit business details
+________________________________________
+🔹 4. User Management
+Models Used:
+•	UserProfile Model (for user details)
+•	Credential Model (for authentication & role management)
+•	Messaging Model (for sending user notifications)
+•	Review & Rating Model (for user reviews)
+APIs Required:
+•	GET /admin/users → Fetch list of users
+•	GET /admin/users/{user_id} → Fetch user details
+•	PATCH /admin/users/{user_id}/block → Block a user
+•	PATCH /admin/users/{user_id}/unblock → Unblock a user
+•	PATCH /admin/users/{user_id}/role → Change user role
+•	GET /admin/users/metrics → Fetch user engagement stats
+________________________________________
+🔹 5. Reports & Analytics
+Models Used:
+•	Event Model (for event performance analytics)
+•	BusinessProfile Model (for business insights)
+•	RSVP & Event Registration Model (for user activity reports)
+•	Revenue Model (for financial reports)
+APIs Required:
+•	GET /admin/reports/revenue → Fetch revenue reports
+•	GET /admin/reports/events → Fetch event performance analytics
+•	GET /admin/reports/users → Fetch user activity insights
+•	GET /admin/reports/businesses → Fetch business performance analytics
+________________________________________
+🔹 6. Content Moderation
+Models Used:
+•	AdminModeration Model (for moderation actions)
+•	CommunityPost Model (for reported posts)
+•	Event Model (for reported events)
+•	Messaging Model (for flagged messages)
+•	Review & Rating Model (for flagged reviews)
+APIs Required:
+•	GET /admin/moderation/reports → Fetch reported content
+•	GET /admin/moderation/{report_id} → Fetch report details
+•	PATCH /admin/moderation/{report_id}/approve → Approve reported content
+•	PATCH /admin/moderation/{report_id}/remove → Remove reported content
+________________________________________
+🔹 7. Settings & Configuration
+Models Used:
+•	Credential Model (for admin settings)
+•	Messaging Model (for notification settings)
+•	Revenue Model (for payment gateway settings)
+APIs Required:
+•	GET /admin/settings → Fetch admin settings
+•	PATCH /admin/settings/profile → Update admin profile
+•	PATCH /admin/settings/payments → Update payment gateway settings
+•	PATCH /admin/settings/notifications → Configure notification settings
+•	PATCH /admin/settings/security → Update API security settings
+
+
+AdminReports&Analytics.js
+AdminReports&Analytics.http

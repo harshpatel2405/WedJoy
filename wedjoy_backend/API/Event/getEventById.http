@@ -1,0 +1,3 @@
+GET http://localhost:1999/getEventById/67e2222dcb59df8e10a9e2bd
+Content-Type: application/json
+
