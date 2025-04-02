@@ -76,6 +76,7 @@ export const getSingleEvent = async (req, res) => {
 };
 
 // Multer Storage (Now Uses Memory Storage for Direct Upload)
+// Use memory storage
 const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
@@ -86,10 +87,10 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Multer Upload Middleware
+// Multer upload middleware
 const upload = multer({
-  storage: storage,
-  fileFilter: fileFilter,
+  storage,
+  fileFilter,
 }).single("profilePicture");
 
 export const UserSignup = async (req, res) => {
