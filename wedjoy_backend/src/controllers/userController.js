@@ -77,7 +77,7 @@ const upload = multer({
   fileFilter: fileFilter,
 }).single("image");
 
-module.exports = upload;
+
 
 
 export const uploadImage = async (req, res) => {
