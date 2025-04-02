@@ -92,6 +92,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const EventsPage = () => {
+  const baseURL = import.meta.env.VITE_API_URL
   const { category } = useParams();
   const [events, setEvents] = useState([]);
   const [page, setPage] = useState(1);
@@ -103,7 +104,7 @@ const EventsPage = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:1999/category/${category}?page=${page}&limit=15`
+        `${baseURL}/category/${category}?page=${page}&limit=15`
       );
       const data = await response.json();
       

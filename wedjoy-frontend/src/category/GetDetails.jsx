@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const GetDetails = () => {
+  const baseURL = import.meta.env.VITE_API_URL
   const { id } = useParams();
   const navigate = useNavigate();
   const [event, setEvent] = useState(null);
@@ -43,7 +44,7 @@ const GetDetails = () => {
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:1999/${id}`);
+        const response = await axios.get(`/${baseURL}/${id}`);
         
         if (response.data.success) {
           const eventData = {

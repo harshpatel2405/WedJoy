@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 
 // Add a custom axios instance with base URL
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:1999",
+  baseURL: import.meta.env.VITE_API_URL ,
   withCredentials: true,
   timeout: 10000,
 });

@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const EventOrganizerSignup = () => {
+  const baseURL = import.meta.env.VITE_API_URL;
   const {
     control,
     handleSubmit,
@@ -54,7 +55,7 @@ const EventOrganizerSignup = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:1999/api/auth/eventOrganizer/Signup",
+        `${baseURL}/api/auth/eventOrganizer/Signup`,
         data
       );
       if (response?.status == 201) {

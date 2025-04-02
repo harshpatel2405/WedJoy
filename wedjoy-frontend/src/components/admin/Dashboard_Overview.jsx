@@ -47,6 +47,7 @@ ChartJS.register(
 );
 
 const Dashboard_Overview = () => {
+  const baseURL = import.meta.env.VITE_API_URL
   const [loading, setLoading] = useState(true);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
 
@@ -93,7 +94,7 @@ const Dashboard_Overview = () => {
 
   const fetchEventCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:1999/api/admin/dashboard/eventCategories");
+      const response = await axios.get(`${baseURL}/api/admin/dashboard/eventCategories`);
       const categories = response.data.categories;
 
       // Extract category names and counts
@@ -113,7 +114,7 @@ const Dashboard_Overview = () => {
 
   const fetchRecentEvents = async () => {
     try {
-      const response = await axios.get("http://localhost:1999/api/admin/dashboard/getRecentEvents");
+      const response = await axios.get(`${baseURL}/api/admin/dashboard/getRecentEvents`);
       const formattedEvents = response.data.recentEvents.map(event => ({
         eventID: event.eventID,
         eventName: event.eventName,
@@ -131,10 +132,10 @@ const Dashboard_Overview = () => {
   const fetchDashboardStats = async () => {
     try {
       const [users, events, businesses, revenue] = await Promise.all([
-        axios.get("http://localhost:1999/api/admin/dashboard/totalUsers"),
-        axios.get("http://localhost:1999/api/admin/dashboard/totalEvents"),
-        axios.get("http://localhost:1999/api/admin/dashboard/getTotalActiveBusinesses"),
-        axios.get("http://localhost:1999/api/admin/dashboard/getTotalRevenue")
+        axios.get(`${baseURL}/api/admin/dashboard/totalUsers`),
+        axios.get(`${baseURL}/api/admin/dashboard/totalEvents`),
+        axios.get(`${baseURL}/api/admin/dashboard/getTotalActiveBusinesses`),
+        axios.get(`${baseURL}/api/admin/dashboard/getTotalRevenue`)
       ]);
 
       setStats({
@@ -174,7 +175,7 @@ const requestSort = (key) => {
 
   const fetchUserGrowthData = async () => {
     try {
-      const response = await axios.get('http://localhost:1999/api/admin/dashboard/getUserGrowth');
+      const response = await axios.get(`${baseURL}/api/admin/dashboard/getUserGrowth`);
       const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       
       const formattedData = {
