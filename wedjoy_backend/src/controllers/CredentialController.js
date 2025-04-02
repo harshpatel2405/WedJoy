@@ -11,7 +11,7 @@ export const updateLoginHistory = async (req, res) => {
     }
 
     const credential = await Credential.findOne({ roleID: req.body.roleID });
-
+CredentialController.js
     if (!credential) {
       return res.status(404).json({ error: "User not found" });
     }
