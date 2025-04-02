@@ -5,7 +5,6 @@
 //   const [isLocationDetectModalOpen, setIsLocationDetectModalOpen] = useState(false);
 //   const navigate = useNavigate();
 
-
 //   const openModal = () => {
 //     setIsLocationDetectModalOpen(true);
 //   };
@@ -138,11 +137,11 @@
 //             className='hover:text-yellow-300 text-white text-[15px] font-medium block'>Tech</a></li>
 //           <li className='max-lg:border-b max-lg:py-3 px-3'><a href='javascript:void(0)'
 //             className='hover:text-yellow-300 text-white text-[15px] font-medium block'>Festivals</a></li>
-//           <li className='ml-auto'>  
+//           <li className='ml-auto'>
 //            <button type="button" className="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 dark:shadow-lg dark:shadow-lime-800/80 font-bold text-l rounded-lg px-3 py-1 text-center "><Link to="eventOrganizer/addEvent">List Your Event</Link></button>
 //               </li>
 //         </ul>
-        
+
 //       </div>
 //     </header>
 //     </div>
@@ -151,18 +150,17 @@
 
 // export default HeaderPreLogin
 
-
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { 
-  Search, 
-  MapPin, 
-  Menu, 
-  X, 
-  ChevronDown, 
-  Calendar, 
-  Users, 
-  Music, 
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Search,
+  MapPin,
+  Menu,
+  X,
+  ChevronDown,
+  Calendar,
+  Users,
+  Music,
   Award,
   Coffee,
   Utensils,
@@ -174,15 +172,16 @@ import {
   Compass,
   TrendingUp,
   Star,
-  Shuffle
-} from 'lucide-react';
+  Shuffle,
+} from "lucide-react";
 
 const HeaderPreLogin = () => {
-  const [isLocationDetectModalOpen, setIsLocationDetectModalOpen] = useState(false);
+  const [isLocationDetectModalOpen, setIsLocationDetectModalOpen] =
+    useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [activeCategory, setActiveCategory] = useState('Arts');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeCategory, setActiveCategory] = useState("Arts");
   const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
   const searchRef = useRef(null);
   const navigate = useNavigate();
@@ -193,7 +192,7 @@ const HeaderPreLogin = () => {
     "Art Exhibitions",
     "Tech Conferences",
     "Food Tasting Events",
-    "Community Workshops"
+    "Community Workshops",
   ];
 
   useEffect(() => {
@@ -211,12 +210,12 @@ const HeaderPreLogin = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    document.addEventListener('mousedown', handleClickOutside);
-    
+    window.addEventListener("scroll", handleScroll);
+    document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -226,7 +225,7 @@ const HeaderPreLogin = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-    document.body.style.overflow = !isMenuOpen ? 'hidden' : 'auto';
+    document.body.style.overflow = !isMenuOpen ? "hidden" : "auto";
   };
 
   const handleSearch = (e) => {
@@ -248,67 +247,133 @@ const HeaderPreLogin = () => {
   };
 
   const categories = [
-    { name: 'Arts', icon: <Award size={18} />, color: 'bg-purple-100 text-purple-600', gradient: 'from-purple-500 to-purple-700' },
-    { name: 'Music', icon: <Music size={18} />, color: 'bg-pink-100 text-pink-600', gradient: 'from-pink-500 to-pink-700' },
-    { name: 'Sports', icon: <Users size={18} />, color: 'bg-blue-100 text-blue-600', gradient: 'from-blue-500 to-blue-700' },
-    { name: 'Workshops', icon: <Calendar size={18} />, color: 'bg-green-100 text-green-600', gradient: 'from-green-500 to-green-700' },
-    { name: 'Food', icon: <Utensils size={18} />, color: 'bg-yellow-100 text-yellow-600', gradient: 'from-yellow-500 to-yellow-700' },
-    { name: 'Community', icon: <Users size={18} />, color: 'bg-red-100 text-red-600', gradient: 'from-red-500 to-red-700' },
-    { name: 'Business', icon: <Briefcase size={18} />, color: 'bg-indigo-100 text-indigo-600', gradient: 'from-indigo-500 to-indigo-700' },
-    { name: 'Tech', icon: <Cpu size={18} />, color: 'bg-cyan-100 text-cyan-600', gradient: 'from-cyan-500 to-cyan-700' },
-    { name: 'Festivals', icon: <Sparkles size={18} />, color: 'bg-amber-100 text-amber-600', gradient: 'from-amber-500 to-amber-700' },
-    { name: 'Other', icon: <Shuffle size={18} />, color: 'bg-gray-100 text-gray-600', gradient: 'from-blue-700 to-blue-800' }
-
+    {
+      name: "Arts",
+      icon: <Award size={18} />,
+      color: "bg-purple-100 text-purple-600",
+      gradient: "from-purple-500 to-purple-700",
+    },
+    {
+      name: "Music",
+      icon: <Music size={18} />,
+      color: "bg-pink-100 text-pink-600",
+      gradient: "from-pink-500 to-pink-700",
+    },
+    {
+      name: "Sports",
+      icon: <Users size={18} />,
+      color: "bg-blue-100 text-blue-600",
+      gradient: "from-blue-500 to-blue-700",
+    },
+    {
+      name: "Workshops",
+      icon: <Calendar size={18} />,
+      color: "bg-green-100 text-green-600",
+      gradient: "from-green-500 to-green-700",
+    },
+    {
+      name: "Food",
+      icon: <Utensils size={18} />,
+      color: "bg-yellow-100 text-yellow-600",
+      gradient: "from-yellow-500 to-yellow-700",
+    },
+    {
+      name: "Community",
+      icon: <Users size={18} />,
+      color: "bg-red-100 text-red-600",
+      gradient: "from-red-500 to-red-700",
+    },
+    {
+      name: "Business",
+      icon: <Briefcase size={18} />,
+      color: "bg-indigo-100 text-indigo-600",
+      gradient: "from-indigo-500 to-indigo-700",
+    },
+    {
+      name: "Tech",
+      icon: <Cpu size={18} />,
+      color: "bg-cyan-100 text-cyan-600",
+      gradient: "from-cyan-500 to-cyan-700",
+    },
+    {
+      name: "Festivals",
+      icon: <Sparkles size={18} />,
+      color: "bg-amber-100 text-amber-600",
+      gradient: "from-amber-500 to-amber-700",
+    },
+    {
+      name: "Other",
+      icon: <Shuffle size={18} />,
+      color: "bg-gray-100 text-gray-600",
+      gradient: "from-blue-700 to-blue-800",
+    },
   ];
 
   return (
     <div>
-      <header className={`font-sans tracking-wide fixed w-full top-0 left-0 z-50 transition-all duration-300 ${isScrolled ? 'shadow-xl bg-white/95 backdrop-blur-md' : 'bg-white shadow-lg'}`}>
-        <section className='flex flex-wrap items-center justify-between relative py-3 lg:px-10 px-4 border-gray-200 border-b lg:min-h-[70px] max-lg:min-h-[60px]'>
+      <header
+        className={`font-sans tracking-wide fixed w-full top-0 left-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? "shadow-xl bg-white/95 backdrop-blur-md"
+            : "bg-white shadow-lg"
+        }`}
+      >
+        <section className="flex flex-wrap items-center justify-between relative py-3 lg:px-10 px-4 border-gray-200 border-b lg:min-h-[70px] max-lg:min-h-[60px]">
           <Link to="/" className="shrink-0 flex items-center gap-2">
             <div className="relative w-15 h-15 sm:w-[50px] sm:h-[50px]">
-              <img 
-                // src="/logoFinal.png" 
-                src='/community-engagement.png'
-                alt="logo" 
-                className='w-full h-full object-contain transition-transform hover:scale-110 duration-300' 
+              <img
+                // src="/logoFinal.png"
+                src="/community-engagement.png"
+                alt="logo"
+                className="w-full h-full object-contain transition-transform hover:scale-110 duration-300"
               />
-            
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-transparent text-xl bg-clip-text bg-gradient-to-r from-indigo-600 via-blue-600 to-purple-600 hidden sm:block">WedJoy</span>
-              <span className="text-xs text-gray-500 hidden sm:block">Discover & Connect</span>
+              <span className="font-extrabold text-transparent text-xl bg-clip-text bg-gradient-to-r from-indigo-600 via-blue-600 to-purple-600 hidden sm:block">
+                WedJoy
+              </span>
+              <span className="text-xs text-gray-500 hidden sm:block">
+                Discover & Connect
+              </span>
             </div>
           </Link>
 
-          <div className='flex flex-wrap items-center flex-1 lg:mx-6'>
-            <div className="relative lg:ml-6 max-md:w-full max-md:order-3 max-md:mt-3 md:flex-grow md:max-w-xl" ref={searchRef}>
+          <div className="flex flex-wrap items-center flex-1 lg:mx-6">
+            <div
+              className="relative lg:ml-6 max-md:w-full max-md:order-3 max-md:mt-3 md:flex-grow md:max-w-xl"
+              ref={searchRef}
+            >
               <form onSubmit={handleSearch} className="w-full">
                 <div className="relative">
-                  <input 
-                    type='text' 
+                  <input
+                    type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     onFocus={handleSearchFocus}
-                    placeholder='Search for events, venues, categories...'
-                    className='w-full bg-gray-100 border border-gray-200 focus:border-indigo-500 focus:bg-white px-4 rounded-full h-12 outline-none text-sm transition-all pl-10 hover:bg-gray-50 focus:ring-2 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm' 
+                    placeholder="Search for events, venues, categories..."
+                    className="w-full bg-gray-100 border border-gray-200 focus:border-indigo-500 focus:bg-white px-4 rounded-full h-12 outline-none text-sm transition-all pl-10 hover:bg-gray-50 focus:ring-2 focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm"
                   />
-                  <button type="submit" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-indigo-600 transition-colors">
+                  <button
+                    type="submit"
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-indigo-600 transition-colors"
+                  >
                     <Search size={18} />
                   </button>
                 </div>
-                
+
                 {/* Search suggestions dropdown */}
                 {showSearchSuggestions && searchSuggestions.length > 0 && (
                   <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
                     <div className="p-2">
                       <div className="flex items-center pb-2 mb-1 border-b border-gray-100">
                         <TrendingUp size={14} className="text-gray-400 mr-2" />
-                        <span className="text-xs font-medium text-gray-500">Trending Searches</span>
+                        <span className="text-xs font-medium text-gray-500">
+                          Trending Searches
+                        </span>
                       </div>
                       <ul>
                         {searchSuggestions.map((suggestion, index) => (
-                          <li 
+                          <li
                             key={index}
                             className="px-3 py-2 hover:bg-gray-50 rounded-md cursor-pointer flex items-center text-sm text-gray-700"
                             onClick={() => handleSelectSuggestion(suggestion)}
@@ -323,19 +388,25 @@ const HeaderPreLogin = () => {
                 )}
               </form>
             </div>
-            
+
             <div className="ml-auto max-md:ml-0 max-md:order-2">
-              <ul className='flex items-center gap-1'>
-                <li className='max-md:hidden flex items-center text-[15px] max-lg:py-2 px-3 font-medium text-gray-700 cursor-pointer hover:text-indigo-600 transition-colors rounded-full hover:bg-indigo-50 group' onClick={openModal}>
+              <ul className="flex items-center gap-1">
+                <li
+                  className="max-md:hidden flex items-center text-[15px] max-lg:py-2 px-3 font-medium text-gray-700 cursor-pointer hover:text-indigo-600 transition-colors rounded-full hover:bg-indigo-50 group"
+                  onClick={openModal}
+                >
                   <div className="relative">
-                    <MapPin size={18} className="mr-2 group-hover:scale-110 transition-transform" />
+                    <MapPin
+                      size={18}
+                      className="mr-2 group-hover:scale-110 transition-transform"
+                    />
                     <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   </div>
                   <span>Detect Location</span>
                 </li>
-                
-                <li className='flex max-lg:py-2 px-2'>
-                  <button 
+
+                <li className="flex max-lg:py-2 px-2">
+                  <button
                     className="relative inline-flex items-center justify-center px-6 py-2.5 overflow-hidden text-sm font-medium text-indigo-600 rounded-full group border border-indigo-300 hover:bg-indigo-50 transition-all duration-300 hover:shadow-sm"
                     onClick={() => navigate("/login")}
                   >
@@ -343,19 +414,19 @@ const HeaderPreLogin = () => {
                     <div className="absolute inset-0 h-full w-0 bg-gradient-to-r from-indigo-50 to-blue-50 transition-all duration-300 group-hover:w-full"></div>
                   </button>
                 </li>
-                
-                <li className='flex max-lg:py-2 px-2'>
-                  <button 
-                    type="button" 
-                    className="text-white bg-gradient-to-r from-indigo-500 via-blue-600 to-indigo-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-indigo-300 shadow-md shadow-indigo-500/20 font-medium rounded-full text-sm px-6 py-2.5 text-center transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/40 hover:scale-105" 
+
+                <li className="flex max-lg:py-2 px-2">
+                  <button
+                    type="button"
+                    className="text-white bg-gradient-to-r from-indigo-500 via-blue-600 to-indigo-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-indigo-300 shadow-md shadow-indigo-500/20 font-medium rounded-full text-sm px-6 py-2.5 text-center transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/40 hover:scale-105"
                     onClick={() => navigate("/signup")}
                   >
                     Sign Up
                   </button>
                 </li>
-                
-                <li className='lg:hidden'>
-                  <button 
+
+                <li className="lg:hidden">
+                  <button
                     className="p-2 rounded-full hover:bg-gray-100 transition-colors relative"
                     onClick={toggleMenu}
                     aria-label="Toggle menu"
@@ -378,24 +449,49 @@ const HeaderPreLogin = () => {
                   <li key={index} className="relative group flex-shrink-0">
                     <Link
                       to={`/category/${category.name.toLowerCase()}`}
-                      className={`flex items-center px-4 py-2 text-sm font-medium hover:text-white transition-colors rounded-md ${category.name === activeCategory ? 'text-yellow-300' : 'text-gray-300'}`}
+                      className={`flex items-center px-4 py-2 text-sm font-medium hover:text-white transition-colors rounded-md ${
+                        category.name === activeCategory
+                          ? "text-yellow-300"
+                          : "text-gray-300"
+                      }`}
                       onClick={() => setActiveCategory(category.name)}
                     >
-                      <span className={`flex items-center gap-1.5 relative ${category.name === activeCategory ? 'transform scale-105' : ''}`}>
-                        <span className={`${category.name === activeCategory ? `p-1 rounded-full bg-gradient-to-r ${category.gradient}` : ''}`}>
+                      <span
+                        className={`flex items-center gap-1.5 relative ${
+                          category.name === activeCategory
+                            ? "transform scale-105"
+                            : ""
+                        }`}
+                      >
+                        <span
+                          className={`${
+                            category.name === activeCategory
+                              ? `p-1 rounded-full bg-gradient-to-r ${category.gradient}`
+                              : ""
+                          }`}
+                        >
                           {category.icon}
                         </span>
                         <span>{category.name}</span>
                         {category.name === activeCategory && (
-                          <Star size={8} className="text-yellow-300 absolute -top-1 -right-2" />
+                          <Star
+                            size={8}
+                            className="text-yellow-300 absolute -top-1 -right-2"
+                          />
                         )}
                       </span>
                     </Link>
-                    <div className={`absolute h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-300 bottom-0 left-0 transition-all duration-300 ${category.name === activeCategory ? 'w-full' : 'w-0 group-hover:w-full'}`}></div>
+                    <div
+                      className={`absolute h-0.5 bg-gradient-to-r from-yellow-400 to-yellow-300 bottom-0 left-0 transition-all duration-300 ${
+                        category.name === activeCategory
+                          ? "w-full"
+                          : "w-0 group-hover:w-full"
+                      }`}
+                    ></div>
                   </li>
                 ))}
               </ul>
-              
+
               <div className="ml-auto flex-shrink-0 pr-4">
                 <Link
                   to="/eventOrganizer/manage-events"
@@ -410,14 +506,24 @@ const HeaderPreLogin = () => {
         </div>
 
         {/* Mobile Navigation Menu - Modern Design */}
-        <div className={`fixed inset-0 bg-black bg-opacity-60 z-50 lg:hidden backdrop-blur-sm transition-opacity duration-300 ${isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-          <div className={`fixed top-0 left-0 w-4/5 max-w-xs h-full bg-white shadow-2xl overflow-auto z-50 transition-transform duration-300 transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div
+          className={`fixed inset-0 bg-black bg-opacity-60 z-50 lg:hidden backdrop-blur-sm transition-opacity duration-300 ${
+            isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        >
+          <div
+            className={`fixed top-0 left-0 w-4/5 max-w-xs h-full bg-white shadow-2xl overflow-auto z-50 transition-transform duration-300 transform ${
+              isMenuOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
+          >
             <div className="flex justify-between items-center p-4 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
               <Link to="/" className="flex items-center gap-2">
                 <img src="/diversity.png" alt="logo" className="w-10" />
-                <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-600">WedJoy</span>
+                <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-600">
+                  WedJoy
+                </span>
               </Link>
-              <button 
+              <button
                 className="p-2 rounded-full hover:bg-gray-100 transition-colors"
                 onClick={toggleMenu}
                 aria-label="Close menu"
@@ -425,54 +531,77 @@ const HeaderPreLogin = () => {
                 <X size={24} className="text-gray-700" />
               </button>
             </div>
-            
+
             <div className="p-4">
               <div className="mb-6">
                 <form onSubmit={handleSearch} className="w-full">
                   <div className="relative">
-                    <input 
-                      type='text' 
+                    <input
+                      type="text"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      placeholder='Search for events...'
-                      className='w-full bg-gray-100 border border-gray-200 focus:border-indigo-500 px-4 rounded-lg h-11 outline-none text-sm pl-10 focus:ring-2 focus:ring-indigo-200 shadow-sm' 
+                      placeholder="Search for events..."
+                      className="w-full bg-gray-100 border border-gray-200 focus:border-indigo-500 px-4 rounded-lg h-11 outline-none text-sm pl-10 focus:ring-2 focus:ring-indigo-200 shadow-sm"
                     />
-                    <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+                    <Search
+                      size={18}
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                    />
                   </div>
                 </form>
               </div>
-              
-              <div onClick={openModal} className="flex items-center py-3 px-4 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg mb-5 cursor-pointer shadow-sm border border-indigo-100">
+
+              <div
+                onClick={openModal}
+                className="flex items-center py-3 px-4 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg mb-5 cursor-pointer shadow-sm border border-indigo-100"
+              >
                 <div className="bg-white p-2 rounded-full shadow-sm mr-3">
                   <MapPin size={18} className="text-indigo-600" />
                 </div>
                 <div>
-                  <span className="text-sm font-medium text-gray-800">Detect my location</span>
+                  <span className="text-sm font-medium text-gray-800">
+                    Detect my location
+                  </span>
                   <p className="text-xs text-gray-500">Find events near you</p>
                 </div>
                 <ChevronDown size={16} className="text-gray-400 ml-auto" />
               </div>
-              
+
               <div className="bg-gray-50 p-3 rounded-xl mb-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-semibold text-gray-800">Trending Categories</h3>
-                  <Link to="/categories" className="text-xs text-indigo-600 font-medium">View All</Link>
+                  <h3 className="font-semibold text-gray-800">
+                    Trending Categories
+                  </h3>
+                  <Link
+                    to="/categories"
+                    className="text-xs text-indigo-600 font-medium"
+                  >
+                    View All
+                  </Link>
                 </div>
                 <ul className="grid grid-cols-2 gap-2">
                   {categories.slice(0, 6).map((category, index) => (
                     <li key={index}>
                       <Link
                         to={`/category/${category.name.toLowerCase()}`}
-                        className={`flex items-center gap-2 p-2 rounded-lg hover:bg-white hover:shadow-sm transition-all ${category.name === activeCategory ? 'bg-white shadow-sm border border-gray-100' : ''}`}
+                        className={`flex items-center gap-2 p-2 rounded-lg hover:bg-white hover:shadow-sm transition-all ${
+                          category.name === activeCategory
+                            ? "bg-white shadow-sm border border-gray-100"
+                            : ""
+                        }`}
                         onClick={() => {
                           setActiveCategory(category.name);
                           setTimeout(() => toggleMenu(), 300);
                         }}
                       >
-                        <span className={`p-1.5 rounded-full ${category.color}`}>
+                        <span
+                          className={`p-1.5 rounded-full ${category.color}`}
+                        >
                           {category.icon}
                         </span>
-                        <span className="font-medium text-sm text-gray-700">{category.name}</span>
+                        <span className="font-medium text-sm text-gray-700">
+                          {category.name}
+                        </span>
                       </Link>
                     </li>
                   ))}
@@ -485,20 +614,30 @@ const HeaderPreLogin = () => {
                 </h3>
                 <ul>
                   <li className="mb-1">
-                    <Link to="/trending" className="text-sm text-gray-700 py-1.5 px-2 hover:bg-white rounded flex items-center" onClick={toggleMenu}>
-                      <TrendingUp size={14} className="mr-2 text-amber-500" /> Trending Events
+                    <Link
+                      to="/trending"
+                      className="text-sm text-gray-700 py-1.5 px-2 hover:bg-white rounded flex items-center"
+                      onClick={toggleMenu}
+                    >
+                      <TrendingUp size={14} className="mr-2 text-amber-500" />{" "}
+                      Trending Events
                     </Link>
                   </li>
                   <li className="mb-1">
-                    <Link to="/popular" className="text-sm text-gray-700 py-1.5 px-2 hover:bg-white rounded flex items-center" onClick={toggleMenu}>
-                      <Star size={14} className="mr-2 text-amber-500" /> Popular Near You
+                    <Link
+                      to="/popular"
+                      className="text-sm text-gray-700 py-1.5 px-2 hover:bg-white rounded flex items-center"
+                      onClick={toggleMenu}
+                    >
+                      <Star size={14} className="mr-2 text-amber-500" /> Popular
+                      Near You
                     </Link>
                   </li>
                 </ul>
               </div>
-              
+
               <div className="mt-auto pt-4 border-t border-gray-200 space-y-3">
-                <button 
+                <button
                   className="w-full py-2.5 px-4 rounded-lg border border-indigo-300 text-indigo-600 font-medium hover:bg-indigo-50 transition-colors flex justify-center items-center"
                   onClick={() => {
                     navigate("/login");
@@ -507,8 +646,8 @@ const HeaderPreLogin = () => {
                 >
                   Login
                 </button>
-                
-                <button 
+
+                <button
                   className="w-full py-2.5 px-4 rounded-lg bg-gradient-to-r from-indigo-500 via-blue-600 to-indigo-700 text-white font-medium hover:from-indigo-600 hover:to-blue-700 transition-colors shadow-md"
                   onClick={() => {
                     navigate("/signup");
@@ -517,7 +656,7 @@ const HeaderPreLogin = () => {
                 >
                   Sign Up
                 </button>
-                
+
                 <Link
                   to="/eventOrganizer/addEvent"
                   className=" w-full py-2.5 px-4 rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 font-medium text-center hover:from-yellow-500 hover:to-yellow-600 transition-colors shadow-md flex items-center justify-center"
@@ -529,51 +668,74 @@ const HeaderPreLogin = () => {
               </div>
             </div>
           </div>
-          
-          <div 
-            className="fixed inset-0 z-40"
-            onClick={toggleMenu}
-          ></div>
+
+          <div className="fixed inset-0 z-40" onClick={toggleMenu}></div>
         </div>
       </header>
-      
+
       {/* Spacer to prevent content from hiding behind fixed header */}
       <div className="h-[120px] lg:h-[115px]"></div>
-      
+
       {/* Location Detect Modal with premium design */}
       {isLocationDetectModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl shadow-2xl p-0 w-full max-w-md transform transition-all duration-300 scale-100 overflow-hidden">
             <div className="bg-gradient-to-r from-indigo-600 to-blue-700 p-4 text-white">
               <h3 className="text-xl font-bold">Discover Events Near You</h3>
-              <p className="text-indigo-100 text-sm mt-1">Enable location services for personalized experiences</p>
+              <p className="text-indigo-100 text-sm mt-1">
+                Enable location services for personalized experiences
+              </p>
             </div>
-            
+
             <div className="p-6">
               <div className="flex items-start mb-6">
                 <div className="bg-indigo-100 p-3 rounded-full mr-4 mt-1">
                   <MapPin size={24} className="text-indigo-600" />
                 </div>
                 <div>
-                  <p className="text-gray-600 mb-2">Allow WedJoy to access your location to show you events happening nearby and get personalized recommendations.</p>
+                  <p className="text-gray-600 mb-2">
+                    Allow WedJoy to access your location to show you events
+                    happening nearby and get personalized recommendations.
+                  </p>
                   <div className="bg-yellow-50 border-l-4 border-yellow-400 p-2 text-sm text-yellow-800">
-                    Your privacy is important to us. We only use your location to enhance your experience.
+                    Your privacy is important to us. We only use your location
+                    to enhance your experience.
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex gap-3 justify-end">
-                <button 
+                <button
                   className="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium"
                   onClick={() => setIsLocationDetectModalOpen(false)}
                 >
                   Not Now
                 </button>
-                <button 
+                <button
                   className="px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-blue-600 text-white rounded-lg hover:from-indigo-600 hover:to-blue-700 transition-colors shadow-md focus:ring-2 focus:ring-indigo-300 font-medium"
-                  onClick={() => {
-                    // Implement location detection logic
-                    setTimeout(() => setIsLocationDetectModalOpen(false), 1000);
+                  onClick={async () => {
+                    try {
+                      const ipResponse = await fetch(
+                        "https://ipinfo.io/json?token=YOUR_ACCESS_TOKEN"
+                      );
+                      const ipData = await ipResponse.json();
+                      const [lat, lon] = ipData.loc.split(",");
+
+                      // Call GoMaps.Pro API to fetch location details
+                      const goMapsResponse = await fetch(
+                        `https://api.gomaps.pro/api/location?lat=${lat}&lon=${lon}&apikey=YOUR_GOMAPS_API_KEY`
+                      );
+                      const locationData = await goMapsResponse.json();
+
+                      console.log("User Location:", locationData); // Handle the location data here
+
+                      setTimeout(
+                        () => setIsLocationDetectModalOpen(false),
+                        1000
+                      );
+                    } catch (error) {
+                      console.error("Error fetching location:", error);
+                    }
                   }}
                 >
                   Allow Access
