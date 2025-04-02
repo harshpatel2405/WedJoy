@@ -8,7 +8,7 @@ import dotenv from "dotenv";
 import UserRoutes from "./src/routes/userRoutes.js";
 // import EventRoutes from './src/routes/eventRoutes.js'
 dotenv.config();
-
+console.log(process.env.MONGO_URI);
 const PORT = process.env.PORT || 3000;
 const app = express();
 
