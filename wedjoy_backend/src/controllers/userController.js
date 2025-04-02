@@ -59,12 +59,8 @@ import path from 'path';
 import { uploadFileToCloudinary } from "../utils/cloudinaryUpload.js";
 
 // Multer storage configuration
-const storage = multer.diskStorage({
-  destination: "./uploads",
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
+// Multer storage configuration (using memoryStorage)
+const storage = multer.memoryStorage();
 
 // File filter to allow only image uploads
 const fileFilter = (req, file, cb) => {
@@ -80,6 +76,9 @@ const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
 }).single("image");
+
+module.exports = upload;
+
 
 export const uploadImage = async (req, res) => {
   upload(req, res, async (err) => {
