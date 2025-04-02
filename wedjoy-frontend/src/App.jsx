@@ -42,6 +42,8 @@ import Business_Profile from './components/businessOwner/Business_Profile.jsx';
 import ResetPasswordDemo from './resetPasswordDemo.jsx';
 import Music from './category/Music.jsx';
 import GetDetails from './category/GetDetails.jsx';
+import PaymentQRPage from './PaymentsQRPage.jsx';
+import { ToastContainer } from 'react-toastify';
 
 
 
@@ -49,16 +51,17 @@ const AppRoutes = () => {
   // Get the current path
   const currentPath = window.location.pathname;
 
- 
+ <ToastContainer/>
   const isPreLoginRoute = ['/login', '/', '/signup'].includes(currentPath);
 
   const isAdminOrEventOrganizerRoute =
     currentPath.startsWith('/admin') || currentPath.startsWith('/eventOrganizer') || currentPath.startsWith('/businessOwner') 
   return (
     <>
+    <ToastContainer/>
       {/* Conditionally render HeaderPreLogin or AdminHeader */}
-      {/* {isPreLoginRoute ? <HeaderPreLogin /> : isAdminOrEventOrganizerRoute ? <AdminHeader /> : null} */}
-<HeaderPreLogin/>
+      {isPreLoginRoute ? <HeaderPreLogin /> : isAdminOrEventOrganizerRoute ? <AdminHeader /> : null}
+{/* <HeaderPreLogin/> */}
       <Routes>
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminSidebar />}>
@@ -112,7 +115,8 @@ const AppRoutes = () => {
 
         {/* Categories*/}
         <Route path='/category/:category' element={<Music />} /> 
-        <Route path='/getDetails/:id' element={<GetDetails/>} />      
+        <Route path='/getDetails/:id' element={<GetDetails/>} />  
+        <Route path='/payment' element={<PaymentQRPage/>} />   
 
         {/* 404 Not Found Route */}
         <Route path="*" element={<NotFound />} />

@@ -1,5 +1,5 @@
 Admin Model
-
+  
     AdminID
     name
     email
@@ -18,7 +18,4 @@ Admin Model
         login_history - Object
         created_at - Number(Date)
         status - String
-        total_events_accepted - Number
-
-
-
+        total_events_accepted - Number                         

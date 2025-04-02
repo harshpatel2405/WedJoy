@@ -41,7 +41,7 @@ const AdminSidebar = () => {
   };
 
   // Navigation links data
-  const navLinks = [
+  const adminNavLinks = [
     { path: '/admin/dashboard', icon: <LayoutDashboard className="w-5 h-5" />, label: 'Dashboard' },
     { path: '/admin/manage-events', icon: <Calendar className="w-5 h-5" />, label: 'Manage Events' },
     { path: '/admin/manage-businesses', icon: <Building2 className="w-5 h-5" />, label: 'Manage Businesses' },
@@ -88,7 +88,7 @@ const AdminSidebar = () => {
         </div>
         <nav className="mt-6 flex flex-col h-[calc(100vh-6rem)] justify-between px-3">
           <ul className="space-y-3">
-            {businessLinks.map((link) => (
+            {adminNavLinks.map((link) => (
               <li key={link.path} className="relative">
                 {isActive(link.path) && (
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl transform scale-105 shadow-lg z-0 opacity-90"></div>

@@ -2,9 +2,9 @@ POST http://localhost:1999/addEvent
 Content-Type: application/json
 
 {
-  "eventID": "SPO-CRICKET-2025",
+  "eventID": "ganga211",
   "eventName": "T20 Tournament Championship 2025",
-  "eventCategory": "Sports",
+  "eventCategory": "Jaher Khel",
   "eventDescription": "Witness top international cricket teams compete in an exciting T20 tournament series. Featuring live matches, fan zones, and player meet-and-greets.",
   "eventTags": "Cricket, Sports, Tournament, T20",
   "eventStartDate": 1754467200, 

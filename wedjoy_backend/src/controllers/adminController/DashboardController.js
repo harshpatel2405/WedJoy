@@ -17,55 +17,57 @@ const getTotalUsers = async (req, res) => {
 // API  Get user growth data
 const getUserGrowth = async (req, res) => {
   try {
-    const currentYear = new Date().getFullYear();
-    
-    // Create an array of all months with count 0
-    const baseMonths = Array.from({ length: 12 }, (_, i) => ({
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+
+    // Get the total number of days in the current month
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    // Generate an array of all days with count 0
+    const baseDays = Array.from({ length: daysInMonth }, (_, i) => ({
       _id: i + 1,
       count: 0
     }));
+
+    const startOfMonth = new Date(Date.UTC(currentYear, currentMonth, 1));
+    const endOfMonth = new Date(Date.UTC(currentYear, currentMonth, daysInMonth, 23, 59, 59));
 
     const growthData = await User.aggregate([
       {
         $match: {
           createdAt: {
-            $gte: new Date(currentYear, 0, 1),
-            $lte: new Date(currentYear, 11, 31, 23, 59, 59)
+            $gte: startOfMonth,
+            $lte: endOfMonth
           }
         }
       },
       {
         $group: {
-          _id: { $month: "$createdAt" },
+          _id: { $dayOfMonth: "$createdAt" },
           count: { $sum: 1 }
         }
       },
-      {
-        $project: {
-          _id: 1,
-          count: 1
-        }
-      },
-      { 
-        $sort: { _id: 1 } 
-      }
+      { $sort: { _id: 1 } }
     ]);
 
-    // Merge the database results with the base months array
-    const mergedData = baseMonths.map(month => {
-      const found = growthData.find(data => data._id === month._id);
-      return found || month;
+    // Merge growth data with base days
+    const mergedData = baseDays.map(day => {
+      const found = growthData.find(data => data._id === day._id);
+      return found || day;
     });
 
     res.status(200).json({ growthData: mergedData });
   } catch (error) {
-    console.error('Error in getUserGrowth:', error);
-    res.status(500).json({ 
-      message: "Error fetching user growth data", 
-      error: error.message 
+    console.error("Error in getUserGrowth:", error);
+    res.status(500).json({
+      message: "Error fetching daily user growth data",
+      error: error.message
     });
   }
 };
+
+
 
 // API  Get total event count
 const getTotalEvents = async (req, res) => {
@@ -77,17 +79,20 @@ const getTotalEvents = async (req, res) => {
   }
 };
 
-// API  Get event categories distribution
+// API  Get event categories distribution 
 const getEventCategories = async (req, res) => {
   try {
     const categoryData = await Event.aggregate([
-      { $group: { _id: "$category", count: { $sum: 1 } } },
+      { $group: { _id: "$eventCategory", count: { $sum: 1 } } },
+      { $project: { _id: 0, eventCategory: "$_id", count: 1 } } // Rename _id to category
     ]);
+    
     res.status(200).json({ categories: categoryData });
   } catch (error) {
     res.status(500).json({ message: "Error fetching event categories", error });
   }
 };
+
 
 // API  Get recent events
 const getRecentEvents = async (req, res) => {

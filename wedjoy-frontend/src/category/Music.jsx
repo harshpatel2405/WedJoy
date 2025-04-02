@@ -155,8 +155,8 @@ const EventsPage = () => {
 
   return (
     <div className="p-4 md:p-8 min-h-screen text-[#2A3D66] bg-gradient-to-br from-[#DDE7EE] to-[#F8F9FA]">
-      <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-8 md:mb-10 drop-shadow-lg text-[#4A6FA5]">
-        {category ? `✨ ${category} Events 🎭` : "✨ Discover All Events 🎟️🎉"}
+     <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-8 md:mb-10 drop-shadow-lg text-[#4A6FA5]">
+        {category ? `✨ ${category.charAt(0).toUpperCase() + category.slice(1)} Events 🎭` : "✨ Discover All Events 🎟️🎉"}
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

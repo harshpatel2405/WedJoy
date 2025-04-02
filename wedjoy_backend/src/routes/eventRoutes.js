@@ -1,6 +1,6 @@
 import express from "express";
 const routes = express.Router();
-import { addEvent, getAllEvent, deleteEvent, getEventById, updateEvent, getEventsByCategory, getCategories, getEventDetails } from "../controllers/eventController.js";
+import { addEvent, getAllEvent, deleteEvent, getEventById, updateEvent, getEventsByCategory, getCategories, getEventDetails, eventAcceptReject } from "../controllers/eventController.js";
 
 
 
@@ -10,6 +10,8 @@ routes.get("/getAllEvent", getAllEvent);
 routes.get("/getEventById/:id", getEventById);
 routes.put("/updateEvent/:id", updateEvent);
 routes.delete("/deleteEvent/:id", deleteEvent);
+
+routes.put('/:action/:id', eventAcceptReject);
 
 
 

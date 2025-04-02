@@ -1,5 +1,5 @@
 import Event from "../models/Event.js";
-import mongoose from 'mongoose';
+import mongoose, { get } from 'mongoose';
 
 export const getEventRsvps = async (req, res) => {
   console.log("Get Event Rsvps API Called..........")
@@ -50,6 +50,9 @@ export const getAllEvent = async (req, res) => {
   console.log("Get All Event API Called..........")
   try {
     const getEvents = await Event.find();
+    console.log("Get Events Length ::: ", getEvents.length);
+    // console.log("Get Events ::: ", getEvents);
+    console.log("Event Start Date : ",getEvents[0].eventStartDate);
 
     if(getEvents.length==0){
       return res.status(404).json({
@@ -57,10 +60,11 @@ export const getAllEvent = async (req, res) => {
       });
     }
 
-    console.log("Events Fetched Successfully ::: \n", getEvents);
+    // console.log("Events Fetched Successfully ::: \n", getEvents);
     res.status(200).json({
       message: "Events Fetched Successfully",
       data: getEvents,
+      length: getEvents.length,
     });
   } catch (err) {
     res.status(500).json({
@@ -163,7 +167,8 @@ const formatEventForFrontend = (event) => ({
   organizer: event.organizerName,
   contact: event.organizerContactEmail,
   venue: event.venueName || 'Online Event',
-  type: event.eventType
+  type: event.eventType,
+  googleMapsUrl: event.venueGoogleMapLink || null,
 });
 
 export const getEventsByCategory = async (req, res) => {
@@ -233,6 +238,7 @@ export const getEventDetails = async (req, res) => {
     }
 
     const event = await Event.findById(req.params.id).lean();
+    console.log("Event Details Fetched Successfully ::: \n", event);
     
     if (!event) {
       return res.status(404).json({
@@ -273,3 +279,53 @@ export const getCategories = async (req, res) => {
     });
   }
 };
+
+
+
+// Function to handle accepting or rejecting an event
+export const eventAcceptReject = async (req, res) => {
+  console.log("Event Accept/Reject API Called..........");
+
+  
+  console.log("Request Body:", req.body);
+
+ 
+  const { eventId, action } = req.body;
+  // Validate input
+  if (!eventId || !action) {
+    return res.status(400).json({
+      message: "Event ID and action are required",
+    });
+  }
+
+  // Determine the new status based on the action
+  const status = action === 'accept' ? 'Approved' : 'Rejected';
+
+  try {
+    // Update the event status and set isVerified to true
+    const updatedEvent = await Event.findByIdAndUpdate(
+      eventId,
+      { isVerified: true, status: status },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedEvent) {
+      return res.status(404).json({
+        message: "Event not found",
+      });
+    }
+
+    res.status(200).json({
+      message: `Event ${status.toLowerCase()} successfully`,
+      data: updatedEvent,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Error updating event status",
+      error: err.message,
+    });
+  }
+
+  console.log("Event Accept/Reject API Ended..........");
+};
+

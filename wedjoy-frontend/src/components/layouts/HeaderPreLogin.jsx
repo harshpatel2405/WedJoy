@@ -269,7 +269,7 @@ const HeaderPreLogin = () => {
             <div className="relative w-15 h-15 sm:w-[50px] sm:h-[50px]">
               <img 
                 // src="/logoFinal.png" 
-                src='/logo123.gif'
+                src='/community-engagement.png'
                 alt="logo" 
                 className='w-full h-full object-contain transition-transform hover:scale-110 duration-300' 
               />

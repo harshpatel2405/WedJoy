@@ -1,3 +1,516 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  UserIcon,
+  CalendarIcon,
+  BuildingOfficeIcon,
+  CurrencyDollarIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
+} from "@heroicons/react/24/outline";
+import { 
+  ArrowUpDown, 
+  Plus, 
+  Search, 
+  Eye, 
+  Pencil, 
+  MoreVertical,
+  ChevronLeft,
+  ChevronRight,
+  Calendar,
+  Clock,
+  UserCircle
+} from "lucide-react";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+} from "chart.js";
+import { Line, Pie } from "react-chartjs-2";
+import { Link } from "react-router-dom";
+
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title
+);
+
+const Dashboard_Overview = () => {
+  const [loading, setLoading] = useState(true);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalEvents: 0,
+    totalBusinesses: 0,
+    totalRevenue: 0,
+  });
+  const [recentEvents, setRecentEvents] = useState([]);
+  const [userGrowthData, setUserGrowthData] = useState({
+    labels: [],
+    datasets: [{
+      label: 'New Users',
+      data: [],
+      borderColor: "rgb(53, 162, 235)",
+      backgroundColor: "rgba(53, 162, 235, 0.5)",
+      tension: 0.4,
+      fill: true
+    }]
+  });
+  const [eventCategoryData, setEventCategoryData] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: "Event Categories",
+        data: [],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.6)",
+          "rgba(54, 162, 235, 0.6)",
+          "rgba(255, 206, 86, 0.6)",
+          "rgba(75, 192, 192, 0.6)",
+          "rgba(153, 102, 255, 0.6)",
+          "rgba(255, 159, 64, 0.6)",
+          "rgba(100, 200, 200, 0.6)",
+          "rgba(200, 100, 150, 0.6)",
+          "rgba(180, 120, 220, 0.6)",
+          "rgba(220, 180, 140, 0.6)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  });
+
+  const fetchEventCategories = async () => {
+    try {
+      const response = await axios.get("http://localhost:1999/api/admin/dashboard/eventCategories");
+      const categories = response.data.categories;
+
+      // Extract category names and counts
+      const labels = categories.map((item) => item.eventCategory);
+      const data = categories.map((item) => item.count);
+
+      // Update state
+      setEventCategoryData((prevData) => ({
+        ...prevData,
+        labels,
+        datasets: [{ ...prevData.datasets[0], data }],
+      }));
+    } catch (error) {
+      console.error("Error fetching event categories:", error);
+    }
+  };
+
+  const fetchRecentEvents = async () => {
+    try {
+      const response = await axios.get("http://localhost:1999/api/admin/dashboard/getRecentEvents");
+      const formattedEvents = response.data.recentEvents.map(event => ({
+        eventID: event.eventID,
+        eventName: event.eventName,
+        organizerName: event.organizerName,
+        eventStartDate: event.eventStartDate,
+        status: event.status
+      }));
+      setRecentEvents(formattedEvents);
+    } catch (error) {
+      console.error("Failed to fetch recent events:", error);
+      setRecentEvents([]);
+    }
+  };
+
+  const fetchDashboardStats = async () => {
+    try {
+      const [users, events, businesses, revenue] = await Promise.all([
+        axios.get("http://localhost:1999/api/admin/dashboard/totalUsers"),
+        axios.get("http://localhost:1999/api/admin/dashboard/totalEvents"),
+        axios.get("http://localhost:1999/api/admin/dashboard/getTotalActiveBusinesses"),
+        axios.get("http://localhost:1999/api/admin/dashboard/getTotalRevenue")
+      ]);
+
+      setStats({
+        totalUsers: users.data.totalUsers || 0,
+        totalEvents: events.data.totalEvents || 0,
+        totalBusinesses: businesses.data.totalActiveBusinesses || 0,
+        totalRevenue: revenue.data.totalRevenue || 0
+      });
+    } catch (error) {
+      console.error("Failed to fetch dashboard stats:", error);
+      setStats({
+        totalUsers: 0,
+        totalEvents: 0,
+        totalBusinesses: 0,
+        totalRevenue: 0
+      });
+    }
+  };
+
+  
+  const sortedEvents = [...recentEvents].sort((a, b) => {
+    if (!sortConfig.key) return 0;
+    const aValue = a[sortConfig.key];
+    const bValue = b[sortConfig.key];
+    if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+    if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+    return 0;
+});
+
+const requestSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+        direction = "desc";
+    }
+    setSortConfig({ key, direction });
+};
+
+  const fetchUserGrowthData = async () => {
+    try {
+      const response = await axios.get('http://localhost:1999/api/admin/dashboard/getUserGrowth');
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      
+      const formattedData = {
+        labels: response.data.growthData.map(item => monthNames[item._id - 1]),
+        datasets: [{
+          label: 'New Users',
+          data: response.data.growthData.map(item => item.count),
+          borderColor: "rgb(53, 162, 235)",
+          backgroundColor: "rgba(53, 162, 235, 0.5)",
+          tension: 0.4,
+          fill: true
+        }]
+      };
+      setUserGrowthData(formattedData);
+    } catch (error) {
+      console.error('Error fetching user growth data:', error);
+      const mockData = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+          label: 'New Users',
+          data: [120, 190, 150, 210, 180, 250],
+          borderColor: "rgb(53, 162, 235)",
+          backgroundColor: "rgba(53, 162, 235, 0.5)",
+          tension: 0.4,
+          fill: true
+        }]
+      };
+      setUserGrowthData(mockData);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      await fetchDashboardStats();
+      await fetchRecentEvents();
+      await fetchUserGrowthData();
+      await fetchEventCategories();
+      
+      
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  const StatCard = ({ title, value, icon, trend }) => (
+    <div className="bg-white rounded-lg shadow p-4 flex flex-col h-full">
+      <div className="flex justify-between items-center mb-3">
+        <div className="bg-blue-100 p-2 rounded-full">
+          {React.cloneElement(icon, { className: "h-5 w-5 text-blue-600" })}
+        </div>
+        {trend && (
+          <div className={`flex items-center text-sm ${trend > 0 ? "text-green-500" : "text-red-500"}`}>
+            {trend > 0 ? <ArrowUpIcon className="h-4 w-4 mr-1" /> : <ArrowDownIcon className="h-4 w-4 mr-1" />}
+            <span>{Math.abs(trend)}%</span>
+          </div>
+        )}
+      </div>
+      <h3 className="text-sm font-medium text-gray-500">{title}</h3>
+      <p className="text-xl font-bold mt-1 text-gray-800">
+        {value !== undefined &&
+          (title.includes("Revenue")
+            ? `$${value.toLocaleString()}`
+            : value.toLocaleString())}
+      </p>
+    </div>
+  );
+
+  const StatusBadge = ({ status }) => {
+    let bgColor = "bg-gray-100";
+    let textColor = "text-gray-800";
+    
+    if (status === "Approved") {
+      bgColor = "bg-green-100";
+      textColor = "text-green-800";
+    } else if (status === "Rejected") {
+      bgColor = "bg-red-100";
+      textColor = "text-red-800";
+    } else if (status === "Pending") {
+      bgColor = "bg-yellow-100";
+      textColor = "text-yellow-800";
+    }
+
+    return (
+      <span className={`px-2 py-1 rounded-full text-xs ${bgColor} ${textColor}`}>
+        {status}
+      </span>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4 sm:mb-0">
+            Dashboard Overview
+          </h1>
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm">
+              Export Report
+            </button>
+            <button className="bg-white hover:bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm border border-gray-300">
+              Date Range
+            </button>
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="animate-pulse space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="bg-gray-200 rounded-lg h-28"></div>
+              ))}
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="bg-gray-200 rounded-lg h-64"></div>
+              <div className="bg-gray-200 rounded-lg h-64"></div>
+            </div>
+            <div className="bg-gray-200 rounded-lg h-96"></div>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <StatCard
+                title="Total Users"
+                value={stats.totalUsers}
+                icon={<UserIcon />}
+                trend={8.5}
+              />
+              <StatCard
+                title="Total Events"
+                value={stats.totalEvents}
+                icon={<CalendarIcon />}
+                trend={12.3}
+              />
+              <StatCard
+                title="Active Businesses"
+                value={stats.totalBusinesses}
+                icon={<BuildingOfficeIcon />}
+                trend={5.2}
+              />
+              <StatCard
+                title="Total Revenue"
+                value={stats.totalRevenue}
+                icon={<CurrencyDollarIcon />}
+                trend={-2.1}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+              <div className="bg-white rounded-lg shadow p-4">
+                <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                  User Growth
+                </h2>
+                <div className="h-64">
+                  <Line 
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: { legend: { position: "top" } }
+                    }} 
+                    data={userGrowthData} 
+                  />
+                </div>
+              </div>
+              <div className="bg-white rounded-lg shadow p-4">
+      <h2 className="text-lg font-semibold text-gray-800 mb-4">Event Categories</h2>
+      <div className="h-64">
+        <Pie
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: "top" } },
+          }}
+          data={eventCategoryData}
+        />
+      </div>
+    </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow overflow-hidden">
+              <div className="p-4 border-b border-gray-200">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                  <h2 className="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">
+                    Recent Events
+                  </h2>
+                  <button className="text-blue-600 hover:text-blue-800 text-sm">
+                    <Link to='/admin/manage-events'> View All</Link>
+                  </button>
+                </div>
+              </div>
+              <div className="overflow-x-auto">
+              <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-purple-200">
+          <thead className="bg-purple-50">
+            <tr>
+              {[
+                { label: "Event ID", key: "eventID", width: "w-32" },
+                { label: "Event Name", key: "eventName", width: "w-48" },
+                { label: "Organizer", key: "organizerName", width: "w-40" },
+                { label: "Date", key: "eventStartDate", width: "w-32" },
+                { label: "Status", key: "status", width: "w-28" },
+                { label: "Actions", key: null, width: "w-24" }
+              ].map(({ label, key, width }) => (
+                <th
+                  key={label}
+                  className={`px-6 py-3 text-left text-xs font-medium text-purple-700 uppercase tracking-wider ${width}`}
+                >
+                  <div 
+                    className={`flex items-center ${key ? 'cursor-pointer hover:text-purple-900 group' : ''}`}
+                    onClick={() => key && requestSort(key)}
+                  >
+                    {label}
+                    {key && (
+                      <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {sortConfig?.key === key ? (
+                          sortConfig.direction === 'ascending' ? (
+                            <ArrowUpDown className="h-4 w-4 text-purple-600 rotate-180" />
+                          ) : (
+                            <ArrowUpDown className="h-4 w-4 text-purple-600" />
+                          )
+                        ) : (
+                          <ArrowUpDown className="h-4 w-4 text-purple-400" />
+                        )}
+                      </span>
+                    )}
+                  </div>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-purple-100">
+            {sortedEvents.length > 0 ? (
+              sortedEvents.map((event) => (
+                <tr 
+                  key={event.eventID} 
+                  className="hover:bg-purple-50 transition-colors duration-150"
+                >
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-sm font-medium text-purple-900 bg-purple-100 px-3 py-1 rounded-full">
+                      #{event.eventID}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="text-sm font-medium text-purple-900">{event.eventName}</div>
+                    <div className="text-xs text-purple-500 mt-1">{event.category || "General"}</div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 h-8 w-8 rounded-full bg-purple-200 flex items-center justify-center">
+                        <UserCircle className="h-5 w-5 text-purple-700" />
+                      </div>
+                      <div className="ml-3">
+                        <div className="text-sm font-medium text-purple-900">{event.organizerName}</div>
+                        <div className="text-xs text-purple-500">{event.organizerEmail}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center gap-2 text-sm text-purple-900">
+                      <Calendar className="h-4 w-4 text-purple-500" />
+                      {new Date(event.eventStartDate).toLocaleDateString('en-US', { 
+                        month: 'short', 
+                        day: 'numeric',
+                        year: 'numeric'
+                      })}
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-purple-500 mt-1 ml-6">
+                      <Clock className="h-3 w-3 text-purple-400" />
+                      {new Date(event.eventStartDate).toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <StatusBadge status={event.status} />
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div className="flex justify-end space-x-2">
+                      <button 
+                        className="text-purple-600 hover:text-purple-900 p-1.5 rounded-full hover:bg-purple-100"
+                        title="View details"
+                      >
+                        <Eye className="h-5 w-5" />
+                      </button>
+                      <button 
+                        className="text-purple-600 hover:text-purple-900 p-1.5 rounded-full hover:bg-purple-100"
+                        title="Edit"
+                      >
+                        <Pencil className="h-5 w-5" />
+                      </button>
+                      <button 
+                        className="text-purple-600 hover:text-purple-900 p-1.5 rounded-full hover:bg-purple-100"
+                        title="More options"
+                      >
+                        <MoreVertical className="h-5 w-5" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="px-6 py-12 text-center">
+                  <div className="flex flex-col items-center justify-center">
+                    <div className="p-4 rounded-full bg-purple-100 text-purple-500 mb-4">
+                      <Calendar className="h-8 w-8" />
+                    </div>
+                    <h4 className="mt-2 text-lg font-medium text-purple-900">No events found</h4>
+                    <p className="mt-1 text-sm text-purple-500">Create a new event or adjust your search</p>
+                    <button className="mt-4 px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Create New Event
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+     
+        </div>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard_Overview;
+
+
 // import React, { useEffect, useState } from "react";
 // import {
 //   LineChart,
@@ -330,461 +843,3 @@
 // };
 
 // export default Dashboard_Overview;
-
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import {
-  UserIcon,
-  CalendarIcon,
-  BuildingOfficeIcon,
-  CurrencyDollarIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
-} from "@heroicons/react/24/outline";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-} from "chart.js";
-import { Line, Pie } from "react-chartjs-2";
-
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title
-);
-
-const Dashboard_Overview = () => {
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({
-    totalUsers: 0,
-    totalEvents: 0,
-    totalBusinesses: 0,
-    totalRevenue: 0,
-  });
-  const [recentEvents, setRecentEvents] = useState([]);
-  const [userGrowthData, setUserGrowthData] = useState({});
-  const [eventCategoryData, setEventCategoryData] = useState({});
-
- // ... existing code ...
-// ... existing code ...
-
-// ... existing code ...
-
-//suggest best theme
-
-const fetchRecentEvents = async () => {
-  try {
-    const response = await axios.get("http://localhost:1999/api/admin/dashboard/getRecentEvents");
-    
-    // Validate and extract data from response
-    const events = response.data?.recentEvents || [];
-    
-    // Transform dates and ensure all required fields exist
-    const formattedEvents = events.map(event => ({
-      eventID: event.eventID || event._id,
-      eventName: event.eventName || 'Untitled Event',
-      organizerName: event.organizerName || 'Unknown Organizer',
-      eventStartDate: event.eventStartDate || new Date(),
-      status: event.status || 'Pending'
-    }));
-
-    setRecentEvents(formattedEvents);
-    console.log("Recent events loaded successfully!");
-    
-  } catch (error) {
-    console.error("Failed to fetch recent events:", error);
-    setRecentEvents([]); // Set empty array on error
-    // You might want to set an error state here if you have one
-  }
-};
-
-const fetchDashboardStats = async () => {
-  try {
-    // Fetch all stats from backend
-    const [users, events, businesses, revenue] = await Promise.all([
-      axios.get("http://localhost:1999/api/admin/dashboard/totalUsers"),
-      axios.get("http://localhost:1999/api/admin/dashboard/totalEvents"),
-      axios.get("http://localhost:1999/api/admin/dashboard/getTotalActiveBusinesses"),
-      axios.get("http://localhost:1999/api/admin/dashboard/getTotalRevenue")
-    ]);
-
-    // Update stats with response data
-    setStats({
-      totalUsers: users.data.totalUsers || 0,
-      totalEvents: events.data.totalEvents || 0,
-      totalBusinesses: businesses.data.totalActiveBusinesses || 0,
-      totalRevenue: revenue.data.totalRevenue || 0
-    });
-
-    // Log success message
-    console.log("Dashboard stats loaded successfully!");
-
-  } catch (error) {
-    console.error("Failed to fetch dashboard stats:", error);
-   
-    setStats({
-      totalUsers: 0,
-      totalEvents: 0,
-      totalBusinesses: 0,
-      totalRevenue: 0
-    });
-  }
-};
-
-
-
-
-const fetchUserGrowthData = async () => {
-  try {
-    const response = await axios.get('http://localhost:1999/api/admin/dashboard/getUserGrowth');
-    
-    // Transform the data for the chart
-    const monthNames = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-    ];
-    
-    const formattedData = {
-      labels: response.data.growthData.map(item => monthNames[item._id - 1]),
-      datasets: [{
-        label: 'New Users',
-        data: response.data.growthData.map(item => item.count),
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-        tension: 0.4,
-        fill: true
-      }]
-    };
-
-    setUserGrowthData(formattedData);
-    console.log(formattedData)
-  } catch (error) {
-    console.error('Error fetching user growth data:', error);
-    // Set empty data on error
-    setUserGrowthData({
-      labels: [],
-      datasets: [{
-        label: 'New Users',
-        data: [],
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-        tension: 0.4,
-        fill: true
-      }]
-    });
-  }
-};
-
-  
-
-  // ... rest of the existing code ...
-
-
-
-  useEffect(() => {
-    fetchDashboardStats();
-    fetchRecentEvents()
-fetchUserGrowthData();
-  
-  
-    // Simulate API calls
-    setTimeout(() => {
-      
-      setRecentEvents([
-        {
-          id: 1,
-          name: "Summer Music Festival",
-          organizer: "Melody Productions",
-          date: "2025-06-15",
-          status: "Upcoming",
-        },
-        {
-          id: 2,
-          name: "Tech Conference 2025",
-          organizer: "TechCorp Inc.",
-          date: "2025-04-22",
-          status: "Open",
-        },
-        {
-          id: 3,
-          name: "Networking Mixer",
-          organizer: "Business Connect",
-          date: "2025-03-30",
-          status: "Open",
-        },
-        {
-          id: 4,
-          name: "Charity Gala Dinner",
-          organizer: "Hope Foundation",
-          date: "2025-05-12",
-          status: "Upcoming",
-        },
-        {
-          id: 5,
-          name: "Basketball Tournament",
-          organizer: "Sports League",
-          date: "2025-04-05",
-          status: "Open",
-        },
-      ]);
-
-      setUserGrowthData({
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-        datasets: [
-          {
-            label: "New Users",
-            data: [1200, 1900, 2300, 3100, 3800, 4500],
-            borderColor: "rgb(53, 162, 235)",
-            backgroundColor: "rgba(53, 162, 235, 0.5)",
-            tension: 0.4,
-          },
-        ],
-      });
-
-      setEventCategoryData({
-        labels: ["Music", "Sports", "Networking", "Charity", "Tech", "Other"],
-        datasets: [
-          {
-            label: "Event Categories",
-            data: [30, 22, 18, 15, 10, 5],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.6)",
-              "rgba(54, 162, 235, 0.6)",
-              "rgba(255, 206, 86, 0.6)",
-              "rgba(75, 192, 192, 0.6)",
-              "rgba(153, 102, 255, 0.6)",
-              "rgba(255, 159, 64, 0.6)",
-            ],
-            borderWidth: 1,
-          },
-        ],
-      });
-
-      setLoading(false);
-    }, 1500);
-    
-  }, []);
-
-  // Stat Card Component
-  const StatCard = ({ title, value, icon, trend }) => (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex flex-col">
-      <div className="flex justify-between items-center mb-4">
-        <div className="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
-          {icon}
-        </div>
-        {trend && (
-          <div
-            className={`flex items-center ${
-              trend > 0 ? "text-green-500" : "text-red-500"
-            }`}
-          >
-            {trend > 0 ? (
-              <ArrowUpIcon className="h-4 w-4 mr-1" />
-            ) : (
-              <ArrowDownIcon className="h-4 w-4 mr-1" />
-            )}
-            <span>{Math.abs(trend)}%</span>
-          </div>
-        )}
-      </div>
-      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-        {title}
-      </h3>
-      <p className="text-2xl font-bold mt-1 text-gray-800 dark:text-white">
-        {value !== undefined &&
-          (title.includes("Revenue")
-            ? `$${value.toLocaleString()}`
-            : value.toLocaleString())}
-      </p>
-    </div>
-  );
-
-  // Loading skeleton
-  const Skeleton = () => (
-    <div className="animate-pulse">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        {[...Array(4)].map((_, i) => (
-          <div
-            key={i}
-            className="bg-gray-200 dark:bg-gray-700 rounded-lg h-32"
-          ></div>
-        ))}
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <div className="bg-gray-200 dark:bg-gray-700 rounded-lg h-80"></div>
-        <div className="bg-gray-200 dark:bg-gray-700 rounded-lg h-80"></div>
-      </div>
-      <div className="bg-gray-200 dark:bg-gray-700 rounded-lg h-96"></div>
-    </div>
-  );
-
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-    },
-  };
-
-  return (
-    <div className="px-4 py-6 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
-          Dashboard Overview
-        </h1>
-        <div className="flex space-x-3">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center">
-            <span className="mr-2">Export Report</span>
-          </button>
-          <button className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-4 py-2 rounded-md">
-            Date Range
-          </button>
-        </div>
-      </div>
-
-      {loading ? (
-        <Skeleton />
-      ) : (
-        <>
-          {/* Key Metrics Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            <StatCard
-              title="Total Users"
-              value={stats.totalUsers}
-              icon={<UserIcon className="h-6 w-6 text-blue-600" />}
-              trend={8.5}
-            />
-            <StatCard
-              title="Total Events"
-              value={stats.totalEvents}
-              icon={<CalendarIcon className="h-6 w-6 text-blue-600" />}
-              trend={12.3}
-            />
-            <StatCard
-              title="Total Active Businesses"
-              value={stats.totalBusinesses}
-              icon={<BuildingOfficeIcon className="h-6 w-6 text-blue-600" />}
-              trend={5.2}
-            />
-            <StatCard
-              title="Total Revenue"
-              value={stats.totalRevenue}
-              icon={<CurrencyDollarIcon className="h-6 w-6 text-blue-600" />}
-              trend={-2.1}
-            />
-          </div>
-
-          {/* Charts */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-                User Growth
-              </h2>
-              <div className="h-64">
-                <Line options={chartOptions} data={userGrowthData} />
-              </div>
-            </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-                Event Category Distribution
-              </h2>
-              <div className="h-64">
-                <Pie options={chartOptions} data={eventCategoryData} />
-              </div>
-            </div>
-          </div>
-
-          {/* Recent Events Table */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
-                Recent Events
-              </h2>
-              <button className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-                View All
-              </button>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead className="bg-gray-50 dark:bg-gray-900">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Event Name
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Organizer
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Date
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                  {recentEvents.map((event) => (
-                    <tr
-                      key={event.eventID}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-700"
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                        {event.eventName}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                        {event.organizerName}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                        {new Date(event.eventStartDate).toLocaleDateString()}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs ${
-                            event.status === "Open"
-                              ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                              : event.status === "Upcoming"
-                              ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-                              : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
-                          }`}
-                        >
-                          {event.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-3">
-                          View
-                        </button>
-                        <button className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300">
-                          Edit
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
-
-export default Dashboard_Overview;
